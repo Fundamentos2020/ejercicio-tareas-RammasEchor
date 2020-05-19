@@ -1,24 +1,10 @@
 <?php
 header('Access-Control-Allow-Origin: *');
 
-/* Clases */
-class Tarea {
-    public $_id ;
-    public $_titulo ;
-    public $_descripcion ;
-    public $_fecha_limite ;
-    public $_completada ;
-    public $_categoria_id ;
+require_once('Response.php');
 
-    public function __construct( $id, $titulo, $descripcion, $fecha_limite, $completada, $categoria_id )  {
-        $this->_id = $id ;
-        $this->_titulo = $titulo ;
-        $this->_descripcion = $descripcion ;
-        $this->_fecha_limite = $fecha_limite ;
-        $this->_completada = $completada ;
-        $this->_categoria_id = $categoria_id ;
-    }
-}
+/* Clases */
+
 
 /* Funciones */
 function dameArregloTareas( $categoria )    {
@@ -43,11 +29,21 @@ function dameArregloTareas( $categoria )    {
             $tareas[] = $tarea ;
     }
     
-        return( $tareas );
+        $response = new Response();
+        $response->setHttpStatusCode( 200 );
+        $response->setSuccess( true );
+        $response->setData( $tareas );
+        $response->send();
+        exit();
     }
     
     catch( PDOException $e )    {
-        echo 'Error'. $e ;
+        $response = new Response();
+        $response->setHttpStatusCode( 500 );
+        $response->setSuccess( false );
+        $response->addMessage('Algo falló');
+        $response->send();
+        exit();
     }
 }
 
