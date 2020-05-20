@@ -11,7 +11,6 @@ class Tarea {
     private const ENUM_YES = 'SI' ;
     private const ENUM_NO = 'NO' ;
     
-
     /*Atributos */
     private $_id ;
     private $_titulo ;
@@ -22,12 +21,12 @@ class Tarea {
 
     /* Constructor */
     public function __construct( $id, $titulo, $descripcion, $fecha_limite, $completada, $categoria_id )  {
-        $this->_id = $id ;
-        $this->_titulo = $titulo ;
-        $this->_descripcion = $descripcion ;
-        $this->_fecha_limite = $fecha_limite ;
-        $this->_completada = $completada ;
-        $this->_categoria_id = $categoria_id ;
+        $this->setID( $id );
+        $this->setTitulo( $titulo );
+        $this->setDescripcion( $descripcion );
+        $this->setFechaLimite( $fecha_limite );
+        $this->setCompletada( $completada );
+        $this->setCategoriaId( $categoria_id );
     }
 
     /* Getters */
@@ -58,7 +57,7 @@ class Tarea {
     /* Setters */
     public function setID( $id ) {
         if( $id !== null && ( !is_numeric( $id ) || $id <= ID_MIN_VAL || $id >= INT_SIZE || $this->_id !== null ) ) {
-            throw TareaException('Error en id de tarea.');
+            throw new TareaException('Error en id de tarea.');
         }
 
         $this->_id = $id ;
@@ -66,27 +65,31 @@ class Tarea {
 
     public function setTitulo( $titulo )    {
         if( titulo === null || strlen( $titulo ) > TITLE_LEN || strlen( $titulo ) <= 0 )  {
-            throw TareaException('Error en titulo de tarea');
+            throw new TareaException('Error en titulo de tarea');
         }
 
         $this->_titulo = $titulo ;
     }
 
     public function setDescripcion( $descripcion )  {
-        if( $descripcion !== null || strlen( $descripcion ) > DESC_LEN )    {
-            throw TareaException('Error en descripcion de tarea.');
+        if( $descripcion !== null && strlen( $descripcion ) > DESC_LEN )    {
+            throw new TareaException('Error en descripcion de tarea.');
         }
 
         $this->_descripcion = $descripcion ;
     }
 
     public function setFechaLimite( $fecha_limite ) {
+        if( $fecha_limite !== null && date_format(date_create_from_format( 'Y-m-d H:i', $fecha_limite ), 'Y-m-d H:i') !== $fecha_limite )   {
+            throw new TareaException('Error en fecha límite de tarea.');
+        }
+
         $this->_fecha_limite = $fecha_limite ;
     }
 
     public function setCompletada( $completada )    {
         if( strtoupper( $completada ) != ENUM_YES && strtoupper( $completada ) != ENM_NO )  {
-            throw TareaException('Error en campo completada de tarea.');
+            throw new TareaException('Error en campo completada de tarea.');
         }
 
         $this->_completada = strtoupper( $completada );
@@ -94,12 +97,13 @@ class Tarea {
 
     public function setCategoriaId( $categoria_id ) {
         if( !is_numeric( $categoria_id ) || $categoria_id <= ID_MIN_VAL || $categoria_id >= INT_SIZE ) {
-            throw TareaException('Error en categoria id de tarea.');
+            throw new TareaException('Error en categoria id de tarea.');
         }
 
         $this->_categoria_id = $categoria_id ;
     }
 
+    /* Data to echo */
     public function getArray()  {
         $tarea = array();
 

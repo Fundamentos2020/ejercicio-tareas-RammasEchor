@@ -1,7 +1,7 @@
 <?php
 
 class Response  {
-    private $_success ;
+    private $_success = false ;
     private $_httpStatusCode ;
     private $_messages = array();
     private $_data ;
@@ -21,13 +21,14 @@ class Response  {
     }
 
     public function setData( $data )   {
-        $this->data[] = $data ;
+        $this->_data[] = $data ;
     }
 
     public function seToCache( $toCache )   {
-        $this->toCache[] = $toCache ;
+        $this->_toCache[] = $toCache ;
     }
 
+    /* Envia de regreso al cliente */
     public function send()  {
         header('Content-type: application/json;charset-utf-8');
         
@@ -57,7 +58,6 @@ class Response  {
 
         echo json_encode( $this->_responseData );
     }
-
 }
 
 ?>

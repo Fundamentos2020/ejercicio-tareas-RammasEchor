@@ -57,7 +57,7 @@ function dameCategorias()   {
         $categorias = array();
     
         while( $row = $query->fetch( PDO::FETCH_ASSOC )) {
-            $categorias[] = [ $row['id'], $row['nombre'] ];
+            $categorias[] = new Categorias( $row['id'], $row['nombre'] );
     }
     
         return( $categorias );
@@ -67,23 +67,7 @@ function dameCategorias()   {
         echo 'Error'. $e ;
     }
 }
-
-function dameConexion() {
-    try     {
-        $dns = 'mysql:host=localhost;dbname=lista_tareas';
-        $username = 'root';
-        $password = '';
-
-        $connection = new PDO( $dns, $username, $password );
-        $connection->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-        $connection->setAttribute( PDO::ATTR_EMULATE_PREPARES, false );
-
-        return( $connection );
-    }
-    
-    catch( PDOException $e )    {
-        echo 'Error'. $e ;
-    }   
+   
 }
 
 /* Main */
