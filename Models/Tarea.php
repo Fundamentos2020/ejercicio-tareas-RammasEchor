@@ -1,6 +1,8 @@
 <?php
 
-class TareaException extends Exception {}
+class TareaException extends Exception {
+    protected $code = 500 ;
+}
 
 class Tarea {
     /* Constantes de la clase en la base de datos */
@@ -56,7 +58,7 @@ class Tarea {
 
     /* Setters */
     public function setID( $id ) {
-        if( $id !== null && ( !is_numeric( $id ) || $id <= ID_MIN_VAL || $id >= INT_SIZE || $this->_id !== null ) ) {
+        if( $id !== null && ( !is_numeric( $id ) || $id <= self::ID_MIN_VAL || $id >= self::INT_SIZE || $this->_id !== null ) ) {
             throw new TareaException('Error en id de tarea.');
         }
 
@@ -64,7 +66,7 @@ class Tarea {
     }
 
     public function setTitulo( $titulo )    {
-        if( titulo === null || strlen( $titulo ) > TITLE_LEN || strlen( $titulo ) <= 0 )  {
+        if( $titulo === null || strlen( $titulo ) > self::TITLE_LEN || strlen( $titulo ) <= 0 )  {
             throw new TareaException('Error en titulo de tarea');
         }
 
@@ -72,7 +74,7 @@ class Tarea {
     }
 
     public function setDescripcion( $descripcion )  {
-        if( $descripcion !== null && strlen( $descripcion ) > DESC_LEN )    {
+        if( $descripcion !== null && strlen( $descripcion ) > self::DESC_LEN )    {
             throw new TareaException('Error en descripcion de tarea.');
         }
 
@@ -88,7 +90,7 @@ class Tarea {
     }
 
     public function setCompletada( $completada )    {
-        if( strtoupper( $completada ) != ENUM_YES && strtoupper( $completada ) != ENM_NO )  {
+        if( strtoupper( $completada ) != self::ENUM_YES && strtoupper( $completada ) != self::ENUM_NO )  {
             throw new TareaException('Error en campo completada de tarea.');
         }
 
@@ -96,7 +98,7 @@ class Tarea {
     }
 
     public function setCategoriaId( $categoria_id ) {
-        if( !is_numeric( $categoria_id ) || $categoria_id <= ID_MIN_VAL || $categoria_id >= INT_SIZE ) {
+        if( !is_numeric( $categoria_id ) || $categoria_id <= self::ID_MIN_VAL || $categoria_id >= self::INT_SIZE ) {
             throw new TareaException('Error en categoria id de tarea.');
         }
 

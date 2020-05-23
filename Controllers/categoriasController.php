@@ -8,6 +8,9 @@ $response = new Response();
 
 try {
 
+    if( $_SERVER['REQUEST_METHOD'] !== 'GET' )
+        throw new Exception('Método HTTP no permitido.', 405 );
+
     $connection = DB::getConnection();
 
     $query = $connection->prepare('SELECT * FROM categorias');
